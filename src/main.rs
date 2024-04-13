@@ -1,6 +1,7 @@
 use std::process::Command;
 use rand::Rng;
 use std::env;
+use std::path::Path;
 
 fn main() 
 {
@@ -37,6 +38,11 @@ fn up_vpn()
         .expect("failed to execute process");
     */
 
+    if !(Path::new("/etc/wireguard").exists()) {
+        println!("/etc/wireguard directory does not exist - cannot work!");
+        return;
+    }
+
     let bash_server = Command::new("ls").current_dir("/etc/wireguard").output().expect("process failed to execute");
     let string_servers = String::from_utf8(bash_server.stdout).unwrap();
     let available_servers = string_servers.lines().collect::<Vec<_>>();
@@ -62,7 +68,7 @@ fn down_vpn()
         return;
     }
 
-    // Cleaning up IP routes
+    // Cleaning up IP routes if you uncommented that previous section
     /*
     Command::new("sh")
         .arg("-c")
