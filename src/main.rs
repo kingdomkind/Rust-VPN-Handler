@@ -48,12 +48,11 @@ fn up_vpn()
     let available_servers = string_servers.lines().collect::<Vec<_>>();
     let chosen_index = rand::thread_rng().gen_range(0..available_servers.len());
     let chosen_server = &available_servers[chosen_index][0..available_servers[chosen_index].len()-5];
-    let final_string = "sudo wg-quick up ".to_owned() + chosen_server;
 
     println!("{} was enabled.", chosen_server);
-    Command::new("sh")
-    .arg("-c")
-    .arg(final_string)
+    Command::new("wg-quick")
+    .arg("up")
+    .arg(chosen_server)
     .output()
     .expect("failed to execute process");
 }
@@ -77,10 +76,9 @@ fn down_vpn()
         .expect("failed to execute process");
     */
 
-    let final_string = "sudo wg-quick down ".to_owned() + &disabled_vpn;
-    Command::new("sh")
-        .arg("-c")
-        .arg(final_string)
+    Command::new("wg-quick")
+        .arg("down")
+        .arg(&disabled_vpn)
         .output()
         .expect("failed to execute process");
 
@@ -107,9 +105,8 @@ fn which_vpn()
 
 fn get_active_vpn() -> String
 {
-    let vpn_output = Command::new("sh")
-        .arg("-c")
-        .arg("sudo wg show")
+    let vpn_output = Command::new("wg")
+        .arg("show")
         .output()
         .expect("failed to execute process");
     
