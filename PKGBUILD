@@ -1,4 +1,4 @@
-pkgname=vpn-handler
+pkgname=vpn_handler
 pkgver=1.0.1
 pkgrel=2
 makedepends=('rust' 'cargo')
